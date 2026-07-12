@@ -1,12 +1,12 @@
 {
-	"name": "pi-provider-cache",
+	"name": "pi-meta-cache",
 	"version": "0.0.1",
-	"description": "Pi extension: injects provider-specific prefix-cache routing hints for xAI/Grok and Meta Model API",
+	"description": "Pi extension: injects prompt_cache_key for Meta Model API prefix caching",
 	"type": "module",
 	"pi": {
 		"extensions": ["./index.ts"]
 	},
-	"keywords": ["pi-package", "pi", "extension", "cache", "grok", "xai", "meta", "prompt-caching"],
+	"keywords": ["pi-package", "pi", "extension", "cache", "meta", "prompt-caching"],
 	"license": "MIT",
 	"devDependencies": {
 		"@earendil-works/pi-coding-agent": "0.80.6",

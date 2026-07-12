@@ -1,49 +1,34 @@
-# pi-provider-cache
+# pi-meta-cache
 
-Pi extension for provider-specific prefix-cache routing hints.
+Pi extension for Meta Model API prefix-cache routing.
 
-## xAI/Grok
+## What it does
 
-Injects the `x-grok-conv-id` HTTP header for `xai` and `xai-auth` requests.
-xAI caches matching prefixes automatically; the stable header improves routing to
-the server holding the cached prefix.
+Meta caches matching prefixes automatically. This extension injects a stable
+`prompt_cache_key` into `meta` requests so repeated prefixes are more likely to
+route to the backend holding the cached prefix.
 
-## Meta Model API
-
-Injects `prompt_cache_key` into `meta` requests. Meta documents caching as
-automatic and the key as an optional way to improve hit rates across backends.
-The default shared key follows Meta's guidance not to partition by session.
-
-For either provider, cache hits still require an exact, sufficiently large,
-unchanged prompt prefix, and cache eviction can produce misses.
+Cache hits still require an exact, sufficiently large, unchanged prompt prefix,
+and cache eviction can produce misses.
 
 ## Installation
 
 ```bash
-pi install git:github.com/nijaru/pi-provider-cache
+pi install git:github.com/nijaru/pi-meta-cache
 ```
 
 Restart Pi after installing.
 
 ## Configuration
 
-### Grok: `--grok-cache-key`
-
-| Value | Behavior |
-|---|---|
-| `session` | _Default._ Key per Pi session (`pi-grok-<sessionId>`). |
-| `shared` | Fixed key (`pi-grok`) for cross-session routing. |
-| `<literal>` | Custom key. |
-| `off` | Disable extension injection. |
-
-### Meta: `--meta-cache-key`
+Use `--meta-cache-key` to choose the routing key:
 
 | Value | Behavior |
 |---|---|
 | `shared` | _Default._ Fixed key (`pi-meta`) across sessions. |
 | `session` | Key per Pi session (`pi-meta-<sessionId>`). |
 | `<literal>` | Custom key. |
-| `off` | Disable extension injection. |
+| `off` | Disable injection. |
 
 The extension does not overwrite an explicitly supplied `prompt_cache_key`.
 
