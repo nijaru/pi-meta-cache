@@ -1,6 +1,6 @@
 {
 	"name": "pi-provider-cache",
-	"version": "0.2.0",
+	"version": "0.1.0",
 	"description": "Pi extension: injects provider-specific prefix-cache routing hints for xAI/Grok and Meta Model API",
 	"type": "module",
 	"pi": {
