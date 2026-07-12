@@ -8,6 +8,9 @@
 	},
 	"keywords": ["pi-package", "pi", "extension", "cache", "meta", "prompt-caching"],
 	"license": "MIT",
+	"scripts": {
+		"test": "bun test"
+	},
 	"devDependencies": {
 		"@earendil-works/pi-coding-agent": "0.80.6",
 		"typescript": "6.0.3"

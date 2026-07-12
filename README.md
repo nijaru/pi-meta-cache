@@ -39,6 +39,14 @@ repeating a prompt with a large, unchanged prefix. The first request normally
 has zero cached tokens; later requests should report a positive value when the
 cache is hit.
 
+## Development
+
+```bash
+bun install
+bun test
+bunx tsc --noEmit
+```
+
 ## License
 
 MIT
