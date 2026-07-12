@@ -1,15 +1,15 @@
 {
 	"name": "pi-provider-cache",
 	"version": "0.1.0",
-	"description": "Pi extension: injects provider-specific cache headers for prefix caching (xAI/Grok x-grok-conv-id)",
+	"description": "Pi extension: injects provider-specific prefix-cache routing hints for xAI/Grok and Meta Model API",
 	"type": "module",
 	"pi": {
 		"extensions": ["./index.ts"]
 	},
-	"keywords": ["pi-package", "pi", "extension", "cache", "grok", "xai", "prompt-caching"],
+	"keywords": ["pi-package", "pi", "extension", "cache", "grok", "xai", "meta", "prompt-caching"],
 	"license": "MIT",
 	"devDependencies": {
-		"@earendil-works/pi-coding-agent": "latest",
-		"typescript": "^6.0.3"
+		"@earendil-works/pi-coding-agent": "0.80.6",
+		"typescript": "6.0.3"
 	}
 }
