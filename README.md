@@ -1,27 +1,55 @@
 # pi-meta-cache
 
-Pi extension for Meta Model API prefix-cache routing.
+> **No longer needed for typical use — switch to Responses API.**
 
-## What it does
+Pi's `openai-responses` path now handles Meta correctly zero-config:
 
-Meta caches matching prefixes automatically. This extension injects a stable
-`prompt_cache_key` into `meta` requests so repeated prefixes are more likely to
-route to the backend holding the cached prefix.
+- **Thinking**: Meta Chat Completions redacts `reasoning_content` for external keys by design
+  (https://dev.meta.ai/docs/features/reasoning). Responses API returns
+  `reasoning.summary` deltas which Pi maps to proper thinking blocks.
+- **Caching**: `openai-responses` always sends `sessionId` as `prompt_cache_key`
+  when caching is enabled, unlike `openai-completions` which only whitelisted
+  `api.openai.com`. Live test: `cached_tokens` 0 -> 2339 with key (93% hit), 0 without.
 
-Cache hits still require an exact, sufficiently large, unchanged prompt prefix,
-and cache eviction can produce misses.
+**Fix** — in your `~/.pi/agent/models.json` or dotfiles source `dot_pi/agent/models.json`:
 
-## Installation
+```json
+"meta": {
+  "baseUrl": "https://api.meta.ai/v1",
+  "apiKey": "$META_API_KEY",
+  "api": "openai-responses",
+  "models": [
+    {
+      "id": "muse-spark-1.1",
+      "name": "Muse Spark 1.1",
+      "reasoning": true,
+      "input": ["text"],
+      "contextWindow": 262144
+    }
+  ]
+}
+```
+
+No extension needed — works like OpenAI/OpenRouter now.
+
+This extension is only useful if you must stay on `openai-completions`.
+
+---
+
+## Legacy behavior (completions)
+
+Original purpose: inject stable `prompt_cache_key` into `meta` requests so repeated
+prefixes route to backend holding cached prefix.
+
+Cache hits require exact, large, unchanged prompt prefix.
+
+### Installation
 
 ```bash
 pi install git:github.com/nijaru/pi-meta-cache
 ```
 
-Restart Pi after installing.
-
-## Configuration
-
-Use `--meta-cache-key` to choose the routing key:
+### Configuration
 
 | Value | Behavior |
 |---|---|
@@ -30,23 +58,8 @@ Use `--meta-cache-key` to choose the routing key:
 | `<literal>` | Custom key. |
 | `off` | Disable injection. |
 
-The extension does not overwrite an explicitly supplied `prompt_cache_key`.
+### Verify
 
-## Verify
-
-Inspect `usage.prompt_tokens_details.cached_tokens` in provider responses after
-repeating a prompt with a large, unchanged prefix. The first request normally
-has zero cached tokens; later requests should report a positive value when the
-cache is hit.
-
-## Development
-
-```bash
-bun install
-bun test
-bunx tsc --noEmit
-```
-
-## License
+Inspect `usage.prompt_tokens_details.cached_tokens` / `input_tokens_details.cached_tokens`.
 
 MIT
